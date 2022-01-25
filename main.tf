@@ -15,7 +15,7 @@ terraform {
     organization = "olabintan"
 
     workspaces {
-      name = "REPLACE_ME"
+      name = "lab-migrate-state"
     }
   }
 }
