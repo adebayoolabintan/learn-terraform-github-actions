@@ -41,6 +41,19 @@ resource "aws_instance" "web01" {
               EOF
 }
 
+
+resource "aws_instance" "web02" {
+  ami                    = "ami-09e67e426f25ce0d7"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.web-sg.id]
+
+  user_data = <<-EOF
+              #!/bin/bash
+              echo "Hello, World" > index.html
+              nohup busybox httpd -f -p 8080 &
+              EOF
+}
+
 resource "aws_security_group" "web-sg" {
   name = "${random_pet.sg.id}-sg"
   ingress {
@@ -51,6 +64,10 @@ resource "aws_security_group" "web-sg" {
   }
 }
 
-output "web-address" {
+output "web-address1" {
   value = "${aws_instance.web01.public_dns}:8080"
+}
+
+output "web-address2" {
+  value = "${aws_instance.web02.public_dns}:8080"
 }
